@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Nick James" />
+  <title>csvRewrite version 1.5</title>
+  <style type="text/css">
+      /* code{white-space: pre-wrap;} */
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">body{background-color: LightYellow;max-width: 30em;margin-left: 10em;margin-right: auto;text-align: justify;}h1, h2{font-size: large;}h3, h4{font-size: medium;}pre, pre.programlisting, pre.synopsis {background-color: #FFFFFF;border: 1px solid #DDDDDD;color: #000000;float: left;line-height: 1;margin-top: 0.1em;min-width: 90%;padding: 1em 1em 1.5em;}pre#intro{background-color: transparent;border: none;}p, h1, h2, h3 , h4, dl{clear: both;}div.insertedFile{border: 1px dotted darkgray;padding-left: 1em;padding-right: 1em;}a:link {color: #005000;}a:visited {color: #A05010;}a:focus {background-color: #EEEE99;color: #009900;}a:hover {background-color: #EEEE99;border: 1px dashed #DDDDDD;color: #009900;}a {border: 1px dotted #DDDDDD;text-decoration: none;}ul{list-style-type: square;}nav#TOC ul{list-style-type: none;padding-left: 2em;}nav#TOC>ul{padding-left: 0;}h1, h2{padding-top: 1em;}table{width: 40em;text-align: left;vertical-align: top;margin-top: 1em;margin-bottom: 1em;}tbody{vertical-align: top;}th{border: 1px solid grey;padding: .3em;}td{border: 1px dotted grey;padding: .3em;}tr.even{background-color: PaleGreen;}row[parity="even"]{background-color: PaleGreen;}p{margin-top: .25em;margin-bottom: .25em;}.warning{color: red;font-size: large;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">csvRewrite version 1.5</h1>
+<p class="author">Nick James</p>
+<p class="date">25-01-2021</p>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#use-case"><span class="toc-section-number">2</span> Use case</a></li>
+<li><a href="#installation"><span class="toc-section-number">3</span> Installation</a></li>
+<li><a href="#synopsis"><span class="toc-section-number">4</span> Synopsis</a></li>
+<li><a href="#action"><span class="toc-section-number">5</span> Action</a><ul>
+<li><a href="#html-output"><span class="toc-section-number">5.1</span> html output</a><ul>
+<li><a href="#header"><span class="toc-section-number">5.1.1</span> header</a></li>
+<li><a href="#standalone"><span class="toc-section-number">5.1.2</span> standalone</a></li>
+</ul></li>
+<li><a href="#xml-output"><span class="toc-section-number">5.2</span> xml output</a><ul>
+<li><a href="#header-1"><span class="toc-section-number">5.2.1</span> header</a></li>
+<li><a href="#standalone-1"><span class="toc-section-number">5.2.2</span> standalone</a></li>
+</ul></li>
+<li><a href="#sql-output"><span class="toc-section-number">5.3</span> sql output</a><ul>
+<li><a href="#header-2"><span class="toc-section-number">5.3.1</span> header</a></li>
+<li><a href="#standalone-2"><span class="toc-section-number">5.3.2</span> standalone</a></li>
+</ul></li>
+<li><a href="#json-output"><span class="toc-section-number">5.4</span> json output</a><ul>
+<li><a href="#header-3"><span class="toc-section-number">5.4.1</span> header</a></li>
+<li><a href="#standalone-3"><span class="toc-section-number">5.4.2</span> standalone</a></li>
+</ul></li>
+<li><a href="#synth"><span class="toc-section-number">5.5</span> synth</a></li>
+</ul></li>
+<li><a href="#csv-specification"><span class="toc-section-number">6</span> Csv Specification</a><ul>
+<li><a href="#example"><span class="toc-section-number">6.1</span> Example</a></li>
+<li><a href="#csv-grammar"><span class="toc-section-number">6.2</span> Csv Grammar</a></li>
+</ul></li>
+<li><a href="#bugs"><span class="toc-section-number">7</span> Bugs</a></li>
+<li><a href="#building"><span class="toc-section-number">8</span> Building</a></li>
+<li><a href="#changes"><span class="toc-section-number">9</span> Changes</a></li>
+<li><a href="#colophon"><span class="toc-section-number">10</span> Colophon</a></li>
+</ul>
+</nav>
+<h1 id="introduction"><span class="header-section-number">1</span> Introduction</h1>
+<p>csvRewrite parses and translates a csv file into xml, json, an html table or sql (of the sqlite variety) INSERT statements.</p>
+<p>If this doesn’t completely solve the problem, it may still make the original data much more amenable to manipulation into the desired form.</p>
+<h1 id="use-case"><span class="header-section-number">2</span> Use case</h1>
+<p>csv is a ubiquitous format which can usefully be translated into other, more structured, formats, accessible to more sophisticated tools.</p>
+<h1 id="installation"><span class="header-section-number">3</span> Installation</h1>
+<p>Unzip csvRewrite.zip, put <code>bin\csvRewrite.exe</code> somewhere on your path.</p>
+<h1 id="synopsis"><span class="header-section-number">4</span> Synopsis</h1>
+<pre><code>usage: csvRewrite [-v] [-stats] [-s] [-n] [-t type] [-z] [-eps] [-css url]
+[-pivot] [-synth expr] [-synName columnName] [filename]
+rewrites csv in filename as type (default html or xml or sql or json
+or ascii) to stdout. If no filename is given stdin is read.
+
+options are:
+    -ascii              use 0x1e record separator and 0x1f unit separator
+                        to delimit fields
+    -css &lt;value&gt;        to write a css reference to url in the html &lt;head&gt;.
+    -eps                to write &amp;epsilon; in empty fields
+    -h                  help
+    -n                  no header on the first line.
+    -pivot              to turn a,1,2 into a,1\na,2 and so on.
+                        emits csv and ignores -t
+    -s                  produces a standalone file, otherwise a fragment is produced
+    -stats              to write summary data for filename to stdout.
+    -synName &lt;value&gt;    name for synthesised column
+    -synth &lt;value&gt;      synthesise a new column by simple arithmetic
+                        operations on columns eg &quot;c1*c4-c3&quot; copies the table
+                        and produces a new columnN with computed values.
+                        emits csv and ignores -t
+    -t &lt;value&gt;          type. Specifies the output; possible values are
+                        html (the default), xml, json, sql.
+    -trans              transpose. turn a,1,2 into a\n1\n2\n and so on.
+                        emits csv and ignores -t
+    -v                  to write version to stdout.
+    -z                  zebra. to enable striped tables via &lt;tr class=&quot;even|odd&quot;&gt;
+                        and user css.
+</code></pre>
+<h1 id="action"><span class="header-section-number">5</span> Action</h1>
+<p>The file, or stdin, if no file is given, is parsed into it’s fields, which are then written as the output type to stdout. The <code>-synth</code> option allows you to append an extra column by using simple arithmetic operations.</p>
+<h2 id="html-output"><span class="header-section-number">5.1</span> html output</h2>
+<p>Each row of the input is written in a <code>&lt;tr&gt;</code>, with a <code>&lt;td&gt;</code> for each field.</p>
+<h3 id="header"><span class="header-section-number">5.1.1</span> header</h3>
+<p>line 1 is used as <code>&lt;th&gt;</code>s in the html table; <code>&lt;th&gt;</code> is omitted for -n.</p>
+<h3 id="standalone"><span class="header-section-number">5.1.2</span> standalone</h3>
+<p>the table is wrapped in <code>&lt;html&gt;</code>.</p>
+<h2 id="xml-output"><span class="header-section-number">5.2</span> xml output</h2>
+<p>Each row of the input is written in a <code>&lt;row number=&quot;nnn&quot;&gt;</code>. The root element is based on the source filename.</p>
+<h3 id="header-1"><span class="header-section-number">5.2.1</span> header</h3>
+<p>The header is used to name the elements; if there isn’t a header, then column1, column2.. are used.</p>
+<h3 id="standalone-1"><span class="header-section-number">5.2.2</span> standalone</h3>
+<p>If there is a header its fields are used to write an inline dtd. The elements are wrapped in <code>&lt;xml&gt;</code>. If css is defined, a <code>&lt;?xml-stylesheet</code> statement is written.</p>
+<p>A DOCTYPE is written if the csv is rectangular.</p>
+<h2 id="sql-output"><span class="header-section-number">5.3</span> sql output</h2>
+<p>If the csv isn’t rectangular (ie, every row has the same number of columns) then <em>no output is written</em>.</p>
+<h3 id="header-2"><span class="header-section-number">5.3.1</span> header</h3>
+<p>The header is used for the field names; if there isn’t a header, then column1, column2.. are used.</p>
+<h3 id="standalone-2"><span class="header-section-number">5.3.2</span> standalone</h3>
+<p>Has no effect.</p>
+<h2 id="json-output"><span class="header-section-number">5.4</span> json output</h2>
+<p>The root element is based on the source filename.</p>
+<h3 id="header-3"><span class="header-section-number">5.4.1</span> header</h3>
+<p>The header is used for the field names; if there isn’t a header, then column1, column2.. are used.</p>
+<h3 id="standalone-3"><span class="header-section-number">5.4.2</span> standalone</h3>
+<p>Has no effect.</p>
+<h2 id="synth"><span class="header-section-number">5.5</span> synth</h2>
+<p>A new column can be synthesised in much the same way as a spreadsheet. The input file is copied to the output file with the new column appended. Column names are copied from the original file. The new column is named columnN (where N is max column + 1) or the name given in the -synName option.</p>
+<p>The new column is specified by giving a formula consisting of</p>
+<ul>
+<li><p>arithmetic operators + - * / and ()</p></li>
+<li><p>numbers of the form ddd or ddd.ddd (.ddd will fail) where the ds are digits</p></li>
+<li><p>column references of the form cd where the ds are digits</p></li>
+<li><p>optional spaces</p></li>
+</ul>
+<p>synth attempts to give integer answers where sensible, otherwise reals are given to 10dp.</p>
+<p>For example <a href="..\examples\ex03.csv">ex03.csv</a>:</p>
+<pre><code>radius
+0
+1
+2
+3
+4
+5</code></pre>
+<p>with the command line <code>csvrewrite -synth &quot;2 * c1 * (22.0/7.0)&quot; -synName area ..\examples\ex03.csv</code> produces approximate areas for given radii:</p>
+<pre><code>&quot;radius&quot;,&quot;area&quot;
+0,0
+1,6.2857142857
+2,12.5714285714
+3,18.8571428571
+4,25.1428571429
+5,31.4285714286</code></pre>
+<h1 id="csv-specification"><span class="header-section-number">6</span> Csv Specification</h1>
+<p>The dialect of csv is fairly broad, it’s a run of csv fields, either:</p>
+<ul>
+<li><p>ordinary fields</p>
+<p>these are runs of characters excluding spaces, double quotes and commas split on commas and new lines.</p></li>
+<li><p>quoted fields</p>
+<p>a quoted field is enclosed by double quotes and may contain commas, white space including new lines and double quotes escaped by double quotes. white space between delimiting commas and the quote is trimmed.</p></li>
+</ul>
+<h2 id="example"><span class="header-section-number">6.1</span> Example</h2>
+<p>The file <code>..\examples\ex01.csv</code> looks like this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash numberLines"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="st">&quot;&quot;</span> , <span class="st">&quot;&quot;</span> , <span class="st">&quot;&quot;</span>,,</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="st">&quot;,&quot;&quot;&quot;</span>,<span class="st">&quot;,&quot;</span>,<span class="st">&quot; &quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="st">&quot;three line </span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="st">field</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="st">&quot;</span>  , </span>
+<span id="cb4-6"><a href="#cb4-6"></a>,,,,</span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="ex">unquoted</span> field , ,,</span></code></pre></div>
+<p>The command</p>
+<pre><code>csvRewrite -z -eps -t html -n ..\examples\ex01.csv</code></pre>
+<p>gives us</p>
+<table>
+<tbody>
+<tr class="even">
+<td class="column01">
+ε
+</td>
+<td class="column02">
+ε
+</td>
+<td class="column03">
+ε
+</td>
+<td class="column04">
+ε
+</td>
+<td class="column05">
+ε
+</td>
+</tr>
+<tr class="odd">
+<td class="column01">
+,&quot;
+</td>
+<td class="column02">
+,
+</td>
+<td class="column03">
+ 
+</td>
+</tr>
+<tr class="even">
+<td class="column01">
+three line <br /> field<br />
+</td>
+<td class="column02">
+</td>
+</tr>
+<tr class="odd">
+<td class="column01">
+ε
+</td>
+<td class="column02">
+ε
+</td>
+<td class="column03">
+ε
+</td>
+<td class="column04">
+ε
+</td>
+<td class="column05">
+ε
+</td>
+</tr>
+<tr class="even">
+<td class="column01">
+unquoted field
+</td>
+<td class="column02">
+</td>
+<td class="column03">
+ε
+</td>
+<td class="column04">
+ε
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note the following points:</p>
+<ul>
+<li>line 1 has all it’s fields empty; white space at either side of a quoted field is discarded.</li>
+<li>we can mix quoted and bog standard fields in the same row.</li>
+<li>source lines 3-5 inclusive represent one row, owing to the embedded newlines.</li>
+<li>trailing space on source line 5 produces a field with a space in at the end of the row.</li>
+<li>trailing commas on source lines 1, 6 and 7 produce empty fields at the end of the row.</li>
+</ul>
+<h2 id="csv-grammar"><span class="header-section-number">6.2</span> Csv Grammar</h2>
+<p>The exact specification is as the following grammar:</p>
+<div class="insertedFile">
+<!--
+ markupGrammar ..\..\csv\csv.y
+ 2021-01-25 22:57:42
+-->
+<div class="YGrammar">
+<div class="YTranslationRule">
+<a name="csv"><b>csv:</b></a>
+<div class="YProduction">
+<span class="YAltProduction"><code><a href="#recordList">recordList</a> </code></span>
+</div>
+;<br /><br />
+</div>
+<div class="YTranslationRule">
+<a name="recordList"><b>recordList:</b></a>
+<div class="YProduction">
+<span class="YAltProduction"><code><a href="#record">record</a> </code></span><br /> | <span class="YAltProduction"><code><a href="#recordList">recordList</a> <a href="#record">record</a> </code></span>
+</div>
+;<br /><br />
+</div>
+<div class="YTranslationRule">
+<a name="record"><b>record:</b></a>
+<div class="YProduction">
+<span class="YAltProduction"><code><a href="#fieldList">fieldList</a> NEWLINE </code></span><br /> | <span class="YAltProduction"><code><a href="#fieldList">fieldList</a> END_OF_FILE </code></span>
+</div>
+;<br /><br />
+</div>
+<div class="YTranslationRule">
+<a name="fieldList"><b>fieldList:</b></a>
+<div class="YProduction">
+<span class="YAltProduction"><code><a href="#field">field</a> </code></span><br /> | <span class="YAltProduction"><code><a href="#emptyField">emptyField</a> </code></span><br /> | <span class="YAltProduction"><code><a href="#quotedFieldAndSpace">quotedFieldAndSpace</a> </code></span><br /> | <span class="YAltProduction"><code><a href="#fieldList">fieldList</a> COMMA <a href="#emptyField">emptyField</a> </code></span><br /> | <span class="YAltProduction"><code><a href="#fieldList">fieldList</a> COMMA <a href="#field">field</a> </code></span><br /> | <span class="YAltProduction"><code><a href="#fieldList">fieldList</a> COMMA <a href="#quotedFieldAndSpace">quotedFieldAndSpace</a> </code></span>
+</div>
+;<br /><br />
+</div>
+<div class="YTranslationRule">
+<a name="quotedFieldAndSpace"><b>quotedFieldAndSpace:</b></a>
+<div class="YProduction">
+<span class="YAltProduction"><code><a href="#quotedField">quotedField</a> </code></span><br /> | <span class="YAltProduction"><code>WS <a href="#quotedField">quotedField</a> </code></span><br /> | <span class="YAltProduction"><code><a href="#quotedField">quotedField</a> WS </code></span><br /> | <span class="YAltProduction"><code>WS <a href="#quotedField">quotedField</a> WS </code></span>
+</div>
+;<br /><br />
+</div>
+<div class="YTranslationRule">
+<a name="quotedField"><b>quotedField:</b></a>
+<div class="YProduction">
+<span class="YAltProduction"><code>QUOTE <a href="#field">field</a> END_QUOTE </code></span><br /> | <span class="YAltProduction"><code>QUOTE END_QUOTE </code></span>
+</div>
+;<br /><br />
+</div>
+<div class="YTranslationRule">
+<a name="field"><b>field:</b></a>
+<div class="YProduction">
+<span class="YAltProduction"><code><a href="#fieldComponent">fieldComponent</a> </code></span><br /> | <span class="YAltProduction"><code><a href="#field">field</a> <a href="#fieldComponent">fieldComponent</a> </code></span>
+</div>
+;<br /><br />
+</div>
+<div class="YTranslationRule">
+<a name="fieldComponent"><b>fieldComponent:</b></a>
+<div class="YProduction">
+<span class="YAltProduction"><code>WS </code></span><br /> | <span class="YAltProduction"><code>STR </code></span><br /> | <span class="YAltProduction"><code>ESCAPED_QUOTE </code></span><br /> | <span class="YAltProduction"><code>COMMA_IN_QUOTE </code></span><br /> | <span class="YAltProduction"><code>WS_IN_QUOTE </code></span><br /> | <span class="YAltProduction"><code>NEWLINE_IN_QUOTE </code></span>
+</div>
+;<br /><br />
+</div>
+<div class="YTranslationRule">
+<a name="emptyField"><b>emptyField:</b></a>
+<div class="YProduction">
+<span class="YAltProduction"><code><i>ε</i> </code></span>
+</div>
+;<br /><br />
+</div>
+</div>
+</div>
+<h1 id="bugs"><span class="header-section-number">7</span> Bugs</h1>
+<ul>
+<li>If csvRewrite appears to support unicode, it is entirely accidental.</li>
+<li>Windows only, but compiles with g++ and could be ported.</li>
+<li>Rewriting non rectangular files doesn’t always make a lot of sense.</li>
+<li>The supplied binary may have dll dependencies that mean you have to recompile the source on your machine.</li>
+</ul>
+<h1 id="building"><span class="header-section-number">8</span> Building</h1>
+<p><code>src\build.bat</code> does the trick, however, you need flex, yacc and g++. Binaries and dlls for flex, yacc and sed are supplied in <code>src</code> but if on windows you’ll need g++ from the <a href="http://www.mingw.org">minGW site</a> or another compiler.</p>
+<h1 id="changes"><span class="header-section-number">9</span> Changes</h1>
+<p>v 1.1</p>
+<ul>
+<li>introduced -v option.</li>
+<li>fixed bug when writing non rectangular json and xml.</li>
+</ul>
+<p>v 1.2</p>
+<ul>
+<li>introduced -stats option.</li>
+</ul>
+<p>v 1.3</p>
+<ul>
+<li>now reports correct version.</li>
+<li>empty cells are now written for xml.</li>
+</ul>
+<p>v 1.4</p>
+<ul>
+<li>usage message is complete.</li>
+<li>stats reports minimum number of rows.</li>
+<li>columns of integers are identified and sql generated accordingly.</li>
+</ul>
+<p>v 1.5</p>
+<ul>
+<li>-synth, -synName options added.</li>
+<li>detection of reals and integers improved.</li>
+</ul>
+<h1 id="colophon"><span class="header-section-number">10</span> Colophon</h1>
+<p>Generated with</p>
+<pre><code>pp csvRewrite.txt | pandoc --self-contained --toc -N -s -t html5 -c devDoc.css -o csvRewrite.html
+
+
+2021-01-25 22:57:43</code></pre>
+</body>
+</html>

@@ -1,0 +1,8 @@
+"" , "" , "",,
+",""",","," ","   col 4  ", col 5
+"three
+line 
+field
+"  , col 2, col 3,"   col 4  ", col 5
+,,,,
+unquoted field , ,"&#9756; that field isn't empty, this oneis &#9758;",," the end"

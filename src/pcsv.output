@@ -1,0 +1,360 @@
+   0  $accept : csv $end
+
+   1  csv : recordList
+
+   2  recordList : record
+   3             | recordList record
+
+   4  record : fieldList NEWLINE
+   5         | fieldList END_OF_FILE
+
+   6  fieldList : field
+   7            | emptyField
+   8            | quotedFieldAndSpace
+   9            | fieldList COMMA emptyField
+  10            | fieldList COMMA field
+  11            | fieldList COMMA quotedFieldAndSpace
+
+  12  quotedFieldAndSpace : quotedField
+  13                      | WS quotedField
+  14                      | quotedField WS
+  15                      | WS quotedField WS
+
+  16  quotedField : QUOTE field END_QUOTE
+  17              | QUOTE END_QUOTE
+
+  18  field : fieldComponent
+  19        | field fieldComponent
+
+  20  fieldComponent : WS
+  21                 | STR
+  22                 | ESCAPED_QUOTE
+  23                 | COMMA_IN_QUOTE
+  24                 | WS_IN_QUOTE
+  25                 | NEWLINE_IN_QUOTE
+
+  26  emptyField :
+
+state 0
+	$accept : . csv $end  (0)
+	emptyField : .  (26)
+
+	COMMA_IN_QUOTE  shift 1
+	ESCAPED_QUOTE  shift 2
+	QUOTE  shift 3
+	STR  shift 4
+	NEWLINE_IN_QUOTE  shift 5
+	WS_IN_QUOTE  shift 6
+	WS  shift 7
+	COMMA  reduce 26
+	NEWLINE  reduce 26
+	END_OF_FILE  reduce 26
+
+	csv  goto 8
+	emptyField  goto 9
+	fieldComponent  goto 10
+	field  goto 11
+	quotedField  goto 12
+	quotedFieldAndSpace  goto 13
+	fieldList  goto 14
+	record  goto 15
+	recordList  goto 16
+
+
+state 1
+	fieldComponent : COMMA_IN_QUOTE .  (23)
+
+	.  reduce 23
+
+
+state 2
+	fieldComponent : ESCAPED_QUOTE .  (22)
+
+	.  reduce 22
+
+
+state 3
+	quotedField : QUOTE . field END_QUOTE  (16)
+	quotedField : QUOTE . END_QUOTE  (17)
+
+	COMMA_IN_QUOTE  shift 1
+	END_QUOTE  shift 17
+	ESCAPED_QUOTE  shift 2
+	STR  shift 4
+	NEWLINE_IN_QUOTE  shift 5
+	WS_IN_QUOTE  shift 6
+	WS  shift 18
+	.  error
+
+	fieldComponent  goto 10
+	field  goto 19
+
+
+state 4
+	fieldComponent : STR .  (21)
+
+	.  reduce 21
+
+
+state 5
+	fieldComponent : NEWLINE_IN_QUOTE .  (25)
+
+	.  reduce 25
+
+
+state 6
+	fieldComponent : WS_IN_QUOTE .  (24)
+
+	.  reduce 24
+
+
+state 7
+	quotedFieldAndSpace : WS . quotedField  (13)
+	quotedFieldAndSpace : WS . quotedField WS  (15)
+	fieldComponent : WS .  (20)
+
+	QUOTE  shift 3
+	COMMA_IN_QUOTE  reduce 20
+	COMMA  reduce 20
+	ESCAPED_QUOTE  reduce 20
+	STR  reduce 20
+	NEWLINE_IN_QUOTE  reduce 20
+	NEWLINE  reduce 20
+	WS_IN_QUOTE  reduce 20
+	WS  reduce 20
+	END_OF_FILE  reduce 20
+
+	quotedField  goto 20
+
+
+state 8
+	$accept : csv . $end  (0)
+
+	$end  accept
+
+
+state 9
+	fieldList : emptyField .  (7)
+
+	.  reduce 7
+
+
+state 10
+	field : fieldComponent .  (18)
+
+	.  reduce 18
+
+
+state 11
+	fieldList : field .  (6)
+	field : field . fieldComponent  (19)
+
+	COMMA_IN_QUOTE  shift 1
+	ESCAPED_QUOTE  shift 2
+	STR  shift 4
+	NEWLINE_IN_QUOTE  shift 5
+	WS_IN_QUOTE  shift 6
+	WS  shift 18
+	COMMA  reduce 6
+	NEWLINE  reduce 6
+	END_OF_FILE  reduce 6
+
+	fieldComponent  goto 21
+
+
+state 12
+	quotedFieldAndSpace : quotedField .  (12)
+	quotedFieldAndSpace : quotedField . WS  (14)
+
+	WS  shift 22
+	COMMA  reduce 12
+	NEWLINE  reduce 12
+	END_OF_FILE  reduce 12
+
+
+state 13
+	fieldList : quotedFieldAndSpace .  (8)
+
+	.  reduce 8
+
+
+state 14
+	record : fieldList . NEWLINE  (4)
+	record : fieldList . END_OF_FILE  (5)
+	fieldList : fieldList . COMMA emptyField  (9)
+	fieldList : fieldList . COMMA field  (10)
+	fieldList : fieldList . COMMA quotedFieldAndSpace  (11)
+
+	COMMA  shift 23
+	NEWLINE  shift 24
+	END_OF_FILE  shift 25
+	.  error
+
+
+state 15
+	recordList : record .  (2)
+
+	.  reduce 2
+
+
+state 16
+	csv : recordList .  (1)
+	recordList : recordList . record  (3)
+	emptyField : .  (26)
+
+	COMMA_IN_QUOTE  shift 1
+	ESCAPED_QUOTE  shift 2
+	QUOTE  shift 3
+	STR  shift 4
+	NEWLINE_IN_QUOTE  shift 5
+	WS_IN_QUOTE  shift 6
+	WS  shift 7
+	$end  reduce 1
+	COMMA  reduce 26
+	NEWLINE  reduce 26
+	END_OF_FILE  reduce 26
+
+	emptyField  goto 9
+	fieldComponent  goto 10
+	field  goto 11
+	quotedField  goto 12
+	quotedFieldAndSpace  goto 13
+	fieldList  goto 14
+	record  goto 26
+
+
+state 17
+	quotedField : QUOTE END_QUOTE .  (17)
+
+	.  reduce 17
+
+
+state 18
+	fieldComponent : WS .  (20)
+
+	.  reduce 20
+
+
+state 19
+	quotedField : QUOTE field . END_QUOTE  (16)
+	field : field . fieldComponent  (19)
+
+	COMMA_IN_QUOTE  shift 1
+	END_QUOTE  shift 27
+	ESCAPED_QUOTE  shift 2
+	STR  shift 4
+	NEWLINE_IN_QUOTE  shift 5
+	WS_IN_QUOTE  shift 6
+	WS  shift 18
+	.  error
+
+	fieldComponent  goto 21
+
+
+state 20
+	quotedFieldAndSpace : WS quotedField .  (13)
+	quotedFieldAndSpace : WS quotedField . WS  (15)
+
+	WS  shift 28
+	COMMA  reduce 13
+	NEWLINE  reduce 13
+	END_OF_FILE  reduce 13
+
+
+state 21
+	field : field fieldComponent .  (19)
+
+	.  reduce 19
+
+
+state 22
+	quotedFieldAndSpace : quotedField WS .  (14)
+
+	.  reduce 14
+
+
+state 23
+	fieldList : fieldList COMMA . emptyField  (9)
+	fieldList : fieldList COMMA . field  (10)
+	fieldList : fieldList COMMA . quotedFieldAndSpace  (11)
+	emptyField : .  (26)
+
+	COMMA_IN_QUOTE  shift 1
+	ESCAPED_QUOTE  shift 2
+	QUOTE  shift 3
+	STR  shift 4
+	NEWLINE_IN_QUOTE  shift 5
+	WS_IN_QUOTE  shift 6
+	WS  shift 7
+	COMMA  reduce 26
+	NEWLINE  reduce 26
+	END_OF_FILE  reduce 26
+
+	emptyField  goto 29
+	fieldComponent  goto 10
+	field  goto 30
+	quotedField  goto 12
+	quotedFieldAndSpace  goto 31
+
+
+state 24
+	record : fieldList NEWLINE .  (4)
+
+	.  reduce 4
+
+
+state 25
+	record : fieldList END_OF_FILE .  (5)
+
+	.  reduce 5
+
+
+state 26
+	recordList : recordList record .  (3)
+
+	.  reduce 3
+
+
+state 27
+	quotedField : QUOTE field END_QUOTE .  (16)
+
+	.  reduce 16
+
+
+state 28
+	quotedFieldAndSpace : WS quotedField WS .  (15)
+
+	.  reduce 15
+
+
+state 29
+	fieldList : fieldList COMMA emptyField .  (9)
+
+	.  reduce 9
+
+
+state 30
+	fieldList : fieldList COMMA field .  (10)
+	field : field . fieldComponent  (19)
+
+	COMMA_IN_QUOTE  shift 1
+	ESCAPED_QUOTE  shift 2
+	STR  shift 4
+	NEWLINE_IN_QUOTE  shift 5
+	WS_IN_QUOTE  shift 6
+	WS  shift 18
+	COMMA  reduce 10
+	NEWLINE  reduce 10
+	END_OF_FILE  reduce 10
+
+	fieldComponent  goto 21
+
+
+state 31
+	fieldList : fieldList COMMA quotedFieldAndSpace .  (11)
+
+	.  reduce 11
+
+
+14 terminals, 10 nonterminals
+27 grammar rules, 32 states
